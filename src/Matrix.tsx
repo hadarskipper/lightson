@@ -8,8 +8,9 @@ interface MatrixProps {
   cols?: number;
 }
 
-const TOTAL_GRID_ROWS = 3;
-const TOTAL_GRID_COLS = 3;
+const TOTAL_GRID_ROWS = 4;
+const TOTAL_GRID_COLS = 4;
+const SHUFFLE_ITERATIONS = 6;
 
 const imageFiles = [
   '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg',
@@ -20,6 +21,23 @@ export const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
   const [widths, setWidths] = useState<{ [key: number]: number }>({});
   const [overlayStartingPosition, setOverlayStartingPosition] = useState<{ top: number; left: number; width: number; height: number; imageSrc: string; } | null>(null);
   const [tilesState, setTilesState] = useState<{ [key: string]: boolean }>({});
+
+  // Simulate five random tile clicks after the initial state is set
+  React.useEffect(() => {
+    if (overlayStartingPosition) {
+      // Add a small delay to ensure the tiles are rendered
+      setTimeout(() => {
+        // Perform SHUFFLE_ITERATIONS random toggles
+        for (let i = 0; i < SHUFFLE_ITERATIONS; i++) {
+          setTimeout(() => {
+            const randomRow = Math.floor(Math.random() * TOTAL_GRID_ROWS);
+            const randomCol = Math.floor(Math.random() * TOTAL_GRID_COLS);
+            handleTileToggle(randomRow, randomCol);
+          }, i * 250); // 20ms buffer between each toggle
+        }
+      }, 600); // Initial delay to ensure overlay is visible
+    }
+  }, [overlayStartingPosition]);
 
   const handleTileToggle = (rowIndex: number, colIndex: number) => {
     const neighbors = [
@@ -67,7 +85,7 @@ export const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
       for (let row = 0; row < TOTAL_GRID_ROWS; row++) {
         for (let col = 0; col < TOTAL_GRID_COLS; col++) {
           const tileKey = `${row}-${col}`;
-          initialTilesState[tileKey] = (row + col) % 3 === 0; // Using the same pattern as in Tiles.tsx
+          initialTilesState[tileKey] = true; // All tiles start transparent
         }
       }
       setTilesState(initialTilesState);

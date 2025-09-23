@@ -2,8 +2,8 @@ import React from 'react';
 import './Tiles.css';
 
 // Utility function to determine initial transparency pattern
-export const getInitialTileTransparency = (rowIndex: number, colIndex: number): boolean => {
-  return (rowIndex + colIndex) % 3 === 0;
+export const getInitialTileTransparency = (_rowIndex: number, _colIndex: number): boolean => {
+  return true;  // All tiles start transparent
 };
 
 interface TilesProps {
