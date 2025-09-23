@@ -1,0 +1,21 @@
+.matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 32px auto;
+  width: fit-content;
+}
+.matrix-row {
+  display: flex;
+  gap: 8px;
+}
+.matrix-cell {
+  width: 80px;
+  height: 80px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
