@@ -74,10 +74,21 @@ export const Tiles: React.FC<TilesProps> = ({
             height: `${Math.min(tileWidth, tileHeight) * 0.3}px`,
             backgroundColor: 'red',
             borderRadius: '50%',
-            pointerEvents: 'none' // Prevent the circle from interfering with tile clicks
+            pointerEvents: 'none', // Prevent the circle from interfering with tile clicks
+            animation: 'flicker 5s ease-in-out infinite'
           }}
         />
       )}
+      <style jsx>{`
+        @keyframes flicker {
+          0%, 100% {
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.7;
+          }
+        }
+      `}</style>
     </div>
   );
 };

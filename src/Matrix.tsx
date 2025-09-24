@@ -154,6 +154,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
     setOverlayStartingPosition(null);
     setTilesState({}); // Reset tiles state when overlay closes
     setTilesCorectnes({}); // Reset tiles correctness when overlay closes
+    setShowSolution(false);
   };
 
   const renderTilesGrid = () => {
