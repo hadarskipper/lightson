@@ -17,8 +17,10 @@ interface TilesProps {
   };
   width: number;
   height: number;
-  initiallyTransparent?: boolean;
-  onTransparencyChange?: (isTransparent: boolean) => void;
+  isTransparent?: boolean;
+  isCorrect?: boolean;
+  showSolution?: boolean;
+  onTileClick?: () => void;
 }
 
 export const Tiles: React.FC<TilesProps> = ({
@@ -29,20 +31,11 @@ export const Tiles: React.FC<TilesProps> = ({
   topLeft,
   width,
   height,
-  initiallyTransparent,
-  onTransparencyChange
+  isTransparent,
+  isCorrect,
+  showSolution,
+  onTileClick
 }) => {
-  const defaultTransparency = getInitialTileTransparency(rowIndex, colIndex);
-  const [isTransparent, setIsTransparent] = React.useState(
-    initiallyTransparent === undefined ? defaultTransparency : initiallyTransparent
-  );
-
-  // Update transparency when changed externally
-  React.useEffect(() => {
-    if (initiallyTransparent !== undefined) {
-      setIsTransparent(initiallyTransparent);
-    }
-  }, [initiallyTransparent]);
 
   // Calculate the size of each tile
   const tileWidth = width / totalCols;
@@ -52,16 +45,10 @@ export const Tiles: React.FC<TilesProps> = ({
   const tileX = topLeft.x + (colIndex * tileWidth);
   const tileY = topLeft.y + (rowIndex * tileHeight);
 
-  const toggleTransparency = () => {
-    const newTransparency = !isTransparent;
-    setIsTransparent(newTransparency);
-    onTransparencyChange?.(newTransparency);
-  };
-
   return (
     <div
       className="tile"
-      onClick={toggleTransparency}
+      onClick={onTileClick}
       style={{
         position: 'absolute',
         left: `${tileX}px`,

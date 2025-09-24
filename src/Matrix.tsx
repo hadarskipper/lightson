@@ -54,6 +54,8 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
   const [widths, setWidths] = useState<{ [key: number]: number }>({});
   const [overlayStartingPosition, setOverlayStartingPosition] = useState<{ top: number; left: number; width: number; height: number; imageSrc: string; } | null>(null);
   const [tilesState, setTilesState] = useState<{ [key: string]: boolean }>({});
+  const [tilesCorectnes, setTilesCorectnes] = useState<{ [key: string]: boolean }>({});
+  const [showSolution, setShowSolution] = useState<boolean>(false);
 
   // Simulate suffle tile clicks after the initial state is set
   React.useEffect(() => {
@@ -74,6 +76,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
 
   const handleTileToggle = (rowIndex: number, colIndex: number) => {
     const neighbors = [
+      [rowIndex, colIndex],         // the clicked tile itself
       [rowIndex - 1, colIndex],     // top
       [rowIndex + 1, colIndex],     // bottom
       [rowIndex, colIndex - 1],     // left
@@ -85,11 +88,16 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
       // [rowIndex + 1, colIndex + 1]  // bottom-right
     ].filter(([row, col]) => row >= 0 && row < TOTAL_GRID_ROWS && col >= 0 && col < TOTAL_GRID_COLS); // Only valid tiles
 
-    setTilesState(prevState => {
+    setTilesCorectnes(prevState => {
       const newState = { ...prevState };
       // Toggle the clicked tile
       const clickedKey = `${rowIndex}-${colIndex}`;
       newState[clickedKey] = !prevState[clickedKey];
+      return newState;
+    });
+
+    setTilesState(prevState => {
+      const newState = { ...prevState };
       
       // Toggle neighbors
       neighbors.forEach(([row, col]) => {
@@ -114,14 +122,19 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
       const rect = img.getBoundingClientRect();
       
       // Initialize tiles state based on the getInitialTileTransparency pattern
-      const initialTilesState: { [key: string]: boolean } = {};
-      for (let row = 0; row < TOTAL_GRID_ROWS; row++) {
-        for (let col = 0; col < TOTAL_GRID_COLS; col++) {
-          const tileKey = `${row}-${col}`;
-          initialTilesState[tileKey] = true; // All tiles start transparent
+      const initialTilesStateGenerator = () => {
+        const initialTilesState: { [key: string]: boolean } = {};
+        for (let row = 0; row < TOTAL_GRID_ROWS; row++) {
+          for (let col = 0; col < TOTAL_GRID_COLS; col++) {
+            const tileKey = `${row}-${col}`;
+            initialTilesState[tileKey] = true; // All tiles start transparent
+          }
         }
+        return initialTilesState;
       }
-      setTilesState(initialTilesState);
+      
+      setTilesState(initialTilesStateGenerator());
+      setTilesCorectnes(initialTilesStateGenerator());
 
       setOverlayStartingPosition({
         top: rect.top,
@@ -140,6 +153,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
   const handleOverlayClose = () => {
     setOverlayStartingPosition(null);
     setTilesState({}); // Reset tiles state when overlay closes
+    setTilesCorectnes({}); // Reset tiles correctness when overlay closes
   };
 
   const renderTilesGrid = () => {
@@ -164,8 +178,10 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
             topLeft={{ x: centerX, y: centerY }}
             width={Width}
             height={Height}
-            initiallyTransparent={tilesState[tileKey]}
-            onTransparencyChange={() => handleTileToggle(rowIdx, colIdx)}
+            isTransparent={tilesState[tileKey]}
+            isCorrect={tilesCorectnes[tileKey]}
+            showSolution={showSolution}
+            onTileClick={() => handleTileToggle(rowIdx, colIdx)}
           />
         );
       })
@@ -200,7 +216,36 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
         </div>
       ))}
     </div>
-    <Button label="Go to Home" onClick={() => handleOverlayClose()} /></>
+    <div style={{position: 'fixed',
+          bottom: 0,
+          left: 0,
+          height: BUTTON_HIGHT,
+          width: '100%'}}>
+      <button 
+        onClick={handleOverlayClose} 
+        className="btn"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          height: BUTTON_HIGHT,
+          width: '50%',
+        }}>
+        חזרה למסך הבית
+      </button>
+      <button 
+        onClick={() => setShowSolution(!showSolution)} 
+        className="btn"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          height: BUTTON_HIGHT,
+          width: '50%',
+        }}>
+        הצג פתרון
+      </button>
+    </div></>
 
   );
 };
