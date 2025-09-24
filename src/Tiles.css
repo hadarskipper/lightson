@@ -4,5 +4,5 @@
 
 /* Add a slight visible border when transparent and hovered */
 .tile:hover {
-  background-color: rgb(209, 240, 188);
+  background-color: rgb(85, 85, 85);
 }

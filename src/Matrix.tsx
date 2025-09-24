@@ -9,9 +9,11 @@ interface MatrixProps {
   onResetButtonClick?: () => void;
 }
 
-const TOTAL_GRID_ROWS = 4;
-const TOTAL_GRID_COLS = 4;
-const SHUFFLE_ITERATIONS = 6;
+const TOTAL_GRID_ROWS = 6;
+const TOTAL_GRID_COLS = 5;
+const SHUFFLE_ITERATIONS = 10;
+const SHUFFLE_PERIOD = 250;
+
 
 
 const imageFiles = [
@@ -53,7 +55,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
   const [overlayStartingPosition, setOverlayStartingPosition] = useState<{ top: number; left: number; width: number; height: number; imageSrc: string; } | null>(null);
   const [tilesState, setTilesState] = useState<{ [key: string]: boolean }>({});
 
-  // Simulate five random tile clicks after the initial state is set
+  // Simulate suffle tile clicks after the initial state is set
   React.useEffect(() => {
     if (overlayStartingPosition) {
       // Add a small delay to ensure the tiles are rendered
@@ -64,7 +66,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
             const randomRow = Math.floor(Math.random() * TOTAL_GRID_ROWS);
             const randomCol = Math.floor(Math.random() * TOTAL_GRID_COLS);
             handleTileToggle(randomRow, randomCol);
-          }, i * 250); // 20ms buffer between each toggle
+          }, i * SHUFFLE_PERIOD); // 20ms buffer between each toggle
         }
       }, 600); // Initial delay to ensure overlay is visible
     }
@@ -128,6 +130,10 @@ const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {
         height: rect.height,
         imageSrc: img.src
       });
+      setTimeout(() => {
+        alert("סיימנו להגריל את מיקום האריחים\nתנסו להסיר את כלל האריחים ולחשוף את התמונה! כל לחיצה על אריח תסיר או תחזיר אותו ואת השכנים שלו. בהצלחה :)\n\n בסיום אפשר לחזור למסך הבית על ידי לחיצה על הכפתור בתחתית המסך.");
+      }, 600 + SHUFFLE_ITERATIONS*SHUFFLE_PERIOD); // 500ms delay
+
     }
   };
 

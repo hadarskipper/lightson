@@ -68,7 +68,9 @@ export const Tiles: React.FC<TilesProps> = ({
         top: `${tileY}px`,
         width: `${tileWidth}px`,
         height: `${tileHeight}px`,
-        backgroundColor: isTransparent ? 'transparent' : 'rgba(250, 246, 240, 1)',
+        backgroundColor: isTransparent ? 'transparent' : 'rgba(233, 246, 254, 1)',
+        border: isTransparent ? 'none' : '1px solid #b3b3b3ff', // <-- conditional border
+
         boxSizing: 'border-box',
         pointerEvents: 'auto', // Enable clicks
         cursor: 'pointer',
