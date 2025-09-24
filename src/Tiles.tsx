@@ -56,14 +56,28 @@ export const Tiles: React.FC<TilesProps> = ({
         width: `${tileWidth}px`,
         height: `${tileHeight}px`,
         backgroundColor: isTransparent ? 'transparent' : 'rgba(233, 246, 254, 1)',
-        border: isTransparent ? 'none' : '1px solid #b3b3b3ff', // <-- conditional border
-
+        border: isTransparent ? 'none' : '1px solid #b3b3b3ff',
         boxSizing: 'border-box',
-        pointerEvents: 'auto', // Enable clicks
+        pointerEvents: 'auto',
         cursor: 'pointer',
         zIndex: 1000,
-        transition: 'background-color 0.3s ease-in-out'
+        transition: 'background-color 0.3s ease-in-out',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
-    />
+    >
+      {showSolution && !isCorrect && (
+        <div
+          style={{
+            width: `${Math.min(tileWidth, tileHeight) * 0.3}px`,
+            height: `${Math.min(tileWidth, tileHeight) * 0.3}px`,
+            backgroundColor: 'red',
+            borderRadius: '50%',
+            pointerEvents: 'none' // Prevent the circle from interfering with tile clicks
+          }}
+        />
+      )}
+    </div>
   );
 };
