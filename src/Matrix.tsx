@@ -21,33 +21,33 @@ const imageFiles = [
   '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg',
 ];
 
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  disabled?: boolean;
-}
+// interface ButtonProps {
+//   label: string;
+//   onClick: () => void;
+//   disabled?: boolean;
+// }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, disabled = false }) => {
-  console.log(Date() + " - button start render");
+// const Button: React.FC<ButtonProps> = ({ label, onClick, disabled = false }) => {
+//   console.log(Date() + " - button start render");
 
-  return (
-    <button 
-      onClick={onClick} 
-      disabled={disabled}
-      className="btn"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: BUTTON_HIGHT,
-        width: '100%',
-      }}
-    >
-      {label}
-    </button>
-  );
-};
+//   return (
+//     <button 
+//       onClick={onClick} 
+//       disabled={disabled}
+//       className="btn"
+//       style={{
+//         position: 'fixed',
+//         bottom: 0,
+//         left: 0,
+//         right: 0,
+//         height: BUTTON_HIGHT,
+//         width: '100%',
+//       }}
+//     >
+//       {label}
+//     </button>
+//   );
+// };
 
 
 const Matrix: React.FC<MatrixProps> = ({ rows = 3, cols = 3 }) => {

@@ -1,8 +1,12 @@
-.tile {
-  transition: all 0.3s ease-in-out;
+@keyframes flicker {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
-/* Add a slight visible border when transparent and hovered */
-.tile:hover {
-  background-color: rgb(85, 85, 85);
+.solution-dot {
+  animation: flicker 5s ease-in-out infinite;
 }

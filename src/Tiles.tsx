@@ -69,26 +69,16 @@ export const Tiles: React.FC<TilesProps> = ({
     >
       {showSolution && !isCorrect && (
         <div
+          className="solution-dot"
           style={{
             width: `${Math.min(tileWidth, tileHeight) * 0.3}px`,
             height: `${Math.min(tileWidth, tileHeight) * 0.3}px`,
             backgroundColor: 'red',
             borderRadius: '50%',
-            pointerEvents: 'none', // Prevent the circle from interfering with tile clicks
-            animation: 'flicker 5s ease-in-out infinite'
+            pointerEvents: 'none' // Prevent the circle from interfering with tile clicks
           }}
         />
       )}
-      <style jsx>{`
-        @keyframes flicker {
-          0%, 100% {
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.7;
-          }
-        }
-      `}</style>
     </div>
   );
 };
